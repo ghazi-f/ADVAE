@@ -32,7 +32,7 @@ parser.add_argument("--embedding_dim", default=128, type=int)#################"
 parser.add_argument("--pretrained_embeddings", default=False, type=bool)#################"
 parser.add_argument("--z_size", default=96*kz, type=int)#################"
 parser.add_argument("--z_emb_dim", default=192*k, type=int)#################"
-parser.add_argument("--n_latents", default=[16, 16, 16], nargs='+', type=int)#################"
+parser.add_argument("--n_latents", default=[4], nargs='+', type=int)#################"
 parser.add_argument("--text_rep_l", default=3, type=int)
 parser.add_argument("--text_rep_h", default=192*k, type=int)
 parser.add_argument("--encoder_h", default=192*k, type=int)#################"
@@ -45,7 +45,7 @@ parser.add_argument('--minimal_enc', dest='minimal_enc', action='store_true')
 parser.add_argument('--no-minimal_enc', dest='minimal_enc', action='store_false')
 parser.set_defaults(minimal_enc=False)
 parser.add_argument("--losses", default='VAE', choices=["VAE", "IWAE" "LagVAE"], type=str)
-parser.add_argument("--graph", default='Normal', choices=["Vanilla", "Discrete", "IndepInfer", "Normal", "NormalConGen",
+parser.add_argument("--graph", default='IndepInfer', choices=["Vanilla", "Discrete", "IndepInfer", "Normal", "NormalConGen",
                                                           "NormalSimplePrior", "Normal2",  "NormalLSTM"], type=str)
 parser.add_argument("--training_iw_samples", default=1, type=int)
 parser.add_argument("--testing_iw_samples", default=20, type=int)
@@ -170,10 +170,10 @@ def main():
     mean_loss = 0
     stabilize_epochs = 0
     prev_mi = 0
-    model.eval()
-    model.get_disentanglement_summaries2(data.test_iter, 200)
+    # model.eval()
+    # model.get_disentanglement_summaries2(data.test_iter, 200)
     # print(model.get_perplexity(data.val_iter))
-    while data.train_iter is not None  and False: # TODO: Remove this False !!
+    while data.train_iter is not None:
         for i, training_batch in enumerate(data.train_iter):
             if training_batch.text.shape[1] < 2: continue
 
